@@ -1,0 +1,37 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
+
+body {
+  background: #1a1a1a;
+}
+
+.header {
+  background: #000;
+  padding: 8px 0px;
+  margin-bottom: 16px;
+}
+
+#viewport {
+  text-align: center;
+  background: #000;
+}
+
+#viewport video {
+  max-width: 100%;
+}
+
+.video-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  margin-top: 16px;
+}
+
+.video-item {
+  background: #000;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.video-item img {
+  width: 100%;
+}

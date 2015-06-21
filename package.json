@@ -1,0 +1,28 @@
+{
+  "name": "noobspike",
+  "version": "1.0.0",
+  "description": "noobspike",
+  "main": "js/app.js",
+  "dependencies": {
+    "flux": "^2.0.3",
+    "object-assign": "^3.0.0"
+  },
+  "devDependencies": {
+    "browserify": "^6.2.0",
+    "envify": "^3.0.0",
+    "reactify": "^0.15.2",
+    "uglify-js": "~2.4.15",
+    "watchify": "^2.1.1"
+  },
+  "scripts": {
+    "start": "watchify -o public/js/bundle.js -v -d public/js/app.js",
+    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > public/js/bundle.min.js"
+  },
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "author": "ylambda",
+  "license": "MIT"
+}
