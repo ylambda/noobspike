@@ -7,6 +7,13 @@ let AppActions = {
             actionType: AppConstants.VIDEO_PLAY,
             id: id
         });
+    },
+
+    addItem: (item) => {
+        AppDispatcher.dispatch({
+            actionType: AppConstants.ADD_VIDEO,
+            item: item
+        });
     }
 }
 

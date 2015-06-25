@@ -27,10 +27,16 @@ let VideoStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register((action) => {
 
+    console.log(action, action.actionType);
+
     switch(action.actionType) {
         case AppConstants.VIDEO_PLAY:
             _activeVideo = VideoStore.getVideoById(action.id);
             VideoStore.emit(AppConstants.VIDEO_PLAY);
+            break;
+        case AppConstants.ADD_VIDEO:
+            _videos.push(action.item);
+            VideoStore.emit('UPDATE_VIDEOS');
             break;
     }
 

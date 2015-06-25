@@ -6,9 +6,10 @@ class VideoItem extends React.Component {
   render () {
 
       return (
-        <div className="col-md-2 col-xs-4">
+        <div className="col-sm-4 col-xs-12">
             <div className="video-item">
-                <img src={ this.props.video.small_thumbnail }
+                <img
+                    src={ this.props.video.thumbnail}
                     onClick={this._handleClick.bind(this)}
                 />
             </div>
