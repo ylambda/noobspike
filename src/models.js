@@ -1,2 +1,8 @@
 import db from "./database";
-import bookshelf from "bookshelf";
+import Bookshelf from "bookshelf";
+
+let bookshelf = Bookshelf(db);
+
+let Video = bookshelf.Model.extend({
+    tableName: 'videos'
+});

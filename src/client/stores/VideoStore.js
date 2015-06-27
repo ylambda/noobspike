@@ -1,61 +1,64 @@
 import {EventEmitter} from "events";
+import querystring from "querystring";
+import url from "url";
 import AppDispatcher from "../dispatcher/AppDispatcher";
 import AppConstants from "../constants/AppConstants";
 import assign from "object-assign";
 
-let _videos = [
-    {
-        id:  "SerpentineSpryEmperorpenguin",
-        thumbnail: "//thumbs.gfycat.com/SerpentineSpryEmperorpenguin-poster.jpg",
-        small_thumbnail: "//thumbs.gfycat.com/SerpentineSpryEmperorpenguin-thumb100.jpg",
-        sources: {
-            webm: "//giant.gfycat.com/SerpentineSpryEmperorpenguin.webm",
-            mp4: "//giant.gfycat.com/SerpentineSpryEmperorpenguin.mp4"
-        }
-    },{
-        id:  "temptingtotalarthropods",
-        thumbnail: "//thumbs.gfycat.com/TemptingTotalArthropods-poster.jpg",
-        small_thumbnail: "//thumbs.gfycat.com/TemptingTotalArthropods-thumb100.jpg",
-        sources: {
-            webm: "//giant.gfycat.com/TemptingTotalArthropods.webm",
-            mp4: "//giant.gfycat.com/TemptingTotalArthropods.mp4"
-        }
-     },{
-        id:  "UncommonColdBengaltiger",
-        thumbnail: "//thumbs.gfycat.com/UncommonColdBengaltiger-poster.jpg",
-        small_thumbnail: "//thumbs.gfycat.com/UncommonColdBengaltiger-thumb100.jpg",
-        sources: {
-            webm: "//giant.gfycat.com/UncommonColdBengaltiger.webm",
-            mp4: "//giant.gfycat.com/UncommonColdBengaltiger.mp4"
-        }
-     },{
-        id:  "NaughtyConstantCopperbutterfly",
-        thumbnail: "//thumbs.gfycat.com/NaughtyConstantCopperbutterfly-poster.jpg",
-        small_thumbnail: "//thumbs.gfycat.com/NaughtyConstantCopperbutterfly-thumb100.jpg",
-        sources: {
-            webm: "//zippy.gfycat.com/NaughtyConstantCopperbutterfly.webm",
-            mp4: "//fat.gfycat.com/NaughtyConstantCopperbutterfly.mp4"
-        }
-      },{
-        id:  "KnobbyNeglectedIndianelephant",
-        thumbnail: "//thumbs.gfycat.com/KnobbyNeglectedIndianelephant-poster.jpg",
-        small_thumbnail: "//thumbs.gfycat.com/KnobbyNeglectedIndianelephant-thumb100.jpg",
-        sources: {
-            webm: "//zippy.gfycat.com/KnobbyNeglectedIndianelephant.webm",
-            mp4: "//fat.gfycat.com/KnobbyNeglectedIndianelephant.mp4"
-        }
-       },{
-        id:  "ImpoliteHomelyAquaticleech",
-        thumbnail: "//thumbs.gfycat.com/ImpoliteHomelyAquaticleech-poster.jpg",
-        small_thumbnail: "//thumbs.gfycat.com/ImpoliteHomelyAquaticleech-thumb100.jpg",
-        sources: {
-            webm: "//zippy.gfycat.com/ImpoliteHomelyAquaticleech.webm",
-            mp4: "http://fat.gfycat.com/ImpoliteHomelyAquaticleech.mp4"
-        }
-       }
+let subreddits = [
+    'tagpro'
 ]
 
-let _activeVideo = _videos[0];
+let defaultQueryParams = {
+    sort: 'top',
+    t: 'week',
+    q: ''
+}
+
+function fetchVideos(params={}) {
+
+    let queryParams = assign(defaultQueryParams, params, {
+        restrict_sr:'on'
+    });
+
+    queryParams['q'] = 'site:gfycat.com ' + queryParams['q'];
+
+    let subreddit = subreddits.join('+');
+    let qs = querystring.stringify(queryParams);
+    let endpoint = `http://www.reddit.com/r/${subreddit}/search.json?${qs}`;
+
+    let promise = $.getJSON(endpoint);
+    promise.then((response) => {
+        response.data.children.forEach(( child ) => {
+            let post = child.data;
+            parseGfycat(post);
+        });
+    });
+}
+
+function parseGfycat(post) {
+    let pathname = url.parse(post.url).pathname;
+    let gfycatId = pathname.replace('/', '');
+    let endpoint = `http://gfycat.com/cajax/get/${gfycatId}`;
+
+    let gfycat = $.getJSON(endpoint);
+    gfycat.then((data) => {
+        let result = {
+            id: gfycatId,
+            title: post.title,
+            author: post.author,
+            thumbnail:  `//thumbs.gfycat.com/${gfycatId}-poster.jpg`,
+            small_thumbnail:  `//thumbs.gfycat.com/${gfycatId}-thumb100.jpg`,
+            webm: data.gfyItem.webmUrl,
+            mp4: data.gfyItem.mp4Url
+        };
+
+        _videos.push(result);
+    });
+}
+
+let _videos = [];
+let _activeVideo;
 
 let VideoStore = assign({}, EventEmitter.prototype, {
 
@@ -70,14 +73,11 @@ let VideoStore = assign({}, EventEmitter.prototype, {
             }
         });
         return value;
-    }
-
-
+    },
+    fetchVideos: fetchVideos
 });
 
 AppDispatcher.register((action) => {
-
-    console.log(action, action.actionType);
 
     switch(action.actionType) {
         case AppConstants.VIDEO_PLAY:

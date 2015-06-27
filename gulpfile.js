@@ -9,7 +9,17 @@ gulp.task('clean', function(done) {
     del(['build/**'], done);
 });
 
-gulp.task('build:server', function() {
+gulp.task('build', function() {
+    build(false);
+});
+
+gulp.task('watch', function() {
+    build(true);
+});
+
+
+function build(watch) {
+
     var serverGlobs = [
         'src/**',
         '!src/static/**',
@@ -27,11 +37,10 @@ gulp.task('build:server', function() {
     // build views
     gulp.src(['src/views/**'])
         .pipe(gulp.dest('build/views'));
-});
 
-gulp.task('build:client', function(done) {
+    // build clientside
     var clientGlobs = [
-        'src/client/app.jsx'
+        'src/client/app.js'
     ];
 
     var bundler = browserify({
@@ -50,6 +59,6 @@ gulp.task('build:client', function(done) {
     }
 
     return bundle();
-});
+}
 
 gulp.task('default', ['clean', 'build']);
