@@ -1,5 +1,5 @@
 import React from "react";
-import VideoItem from "./VideoItem.jsx";
+import VideoItem from "./VideoItem";
 
 class VideoList extends React.Component {
 
