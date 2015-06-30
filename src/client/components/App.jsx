@@ -1,36 +1,29 @@
 import React from "react";
-import Viewport from "./viewport.react";
-import VideoList from "./videoList.react";
+import Viewport from "./Viewport.jsx";
+import VideoList from "./VideoList.jsx";
 import VideoStore from "../stores/VideoStore";
 import AppConstants from "../constants/AppConstants";
 import AppActions from "../actions/AppActions";
 
-function getInitialState () {
-
-    return {
-        activeVideo: VideoStore.getActiveVideo(),
-        videos: VideoStore.getAll()
-    }
-}
-
-
-class NoobspikeApp extends React.Component {
+class App extends React.Component {
 
     constructor (props) {
         super(props);
-        this.state = getInitialState();
+        this.state = {
+            activeVideo: VideoStore.getActive(),
+            videos: VideoStore.getAll()
+        }
     }
 
     componentDidMount () {
-        VideoStore.on(AppConstants.VIDEO_PLAY, this._playVideo.bind(this));
-        VideoStore.on('UPDATE_VIDEOS', this._updateVideos.bind(this));
-        VideoStore.fetchVideos();
-        let that = this;
-        setTimeout(function() { that.setState({videos: VideoStore.getAll()})}, 2e3);
+        VideoStore.on(AppConstants.VIDEO_PLAY, this._playVideo);
+        VideoStore.on(AppConstants.VIDEO_UPDATE, this._updateVideos);
+        AppActions.fetchVideos();
     }
 
     componentDidUnmount () {
         VideoStore.removeListener(AppConstants.VIDEO_PLAY, this._playVideo);
+        VideoStore.removeListener(AppConstants.VIDEO_UPDATE, this._updateVideos);
     }
 
     render () {
@@ -49,10 +42,9 @@ class NoobspikeApp extends React.Component {
 
     _updateVideos () {
         let videos = VideoStore.getAll();
-        console.log(videos);
         this.setState({ videos });
     }
 
 }
 
-export default NoobspikeApp
+export default App

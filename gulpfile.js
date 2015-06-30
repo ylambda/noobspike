@@ -3,6 +3,8 @@ var del = require('del');
 var babel = require('gulp-babel');
 var babelify = require('babelify');
 var browserify = require('browserify');
+var watch = require('gulp-watch');
+var watchify = require('watchify');
 var source = require('vinyl-source-stream');
 
 gulp.task('clean', function(done) {
@@ -10,16 +12,6 @@ gulp.task('clean', function(done) {
 });
 
 gulp.task('build', function() {
-    build(false);
-});
-
-gulp.task('watch', function() {
-    build(true);
-});
-
-
-function build(watch) {
-
     var serverGlobs = [
         'src/**',
         '!src/static/**',
@@ -27,15 +19,18 @@ function build(watch) {
     ];
 
     gulp.src(serverGlobs)
+        .pipe(watch(serverGlobs))
         .pipe(babel())
         .pipe(gulp.dest('build'));
 
     // build static
     gulp.src(['src/static/**'])
+        .pipe(watch('/src/static/**'))
         .pipe(gulp.dest('build/static'));
 
     // build views
     gulp.src(['src/views/**'])
+        .pipe(watch('/src/static/**'))
         .pipe(gulp.dest('build/views'));
 
     // build clientside
@@ -49,6 +44,8 @@ function build(watch) {
         entries: clientGlobs
     });
 
+    var bundler = watchify(bundler);
+
     function bundle() {
         return bundler
             .transform(babelify)
@@ -59,6 +56,6 @@ function build(watch) {
     }
 
     return bundle();
-}
+})
 
 gulp.task('default', ['clean', 'build']);

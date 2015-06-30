@@ -1,4 +1,4 @@
 import React from "react";
-import NoobspikeApp from "./components/noobspike.react";
+import App from "./components/App";
 
-React.render(<NoobspikeApp/>, document.getElementById("noobspike"));
+React.render(<App/>, document.getElementById("noobspike"));

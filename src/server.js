@@ -1,6 +1,6 @@
 import express from 'express';
 import React from "react";
-import ReactApp from "./client/components/noobspike.react";
+import ReactApp from "./client/components/App.jsx";
 
 let App = React.createFactory(ReactApp);
 
