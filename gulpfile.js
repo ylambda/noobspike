@@ -6,12 +6,16 @@ var browserify = require('browserify');
 var watch = require('gulp-watch');
 var watchify = require('watchify');
 var source = require('vinyl-source-stream');
+var gutil = require('gulp-util');
 
 gulp.task('clean', function(done) {
     del(['build/**'], done);
 });
 
 gulp.task('build', function() {
+
+/*
+
     var serverGlobs = [
         'src/**',
         '!src/static/**',
@@ -33,6 +37,8 @@ gulp.task('build', function() {
         .pipe(watch('/src/static/**'))
         .pipe(gulp.dest('build/views'));
 
+ */
+
     // build clientside
     var clientGlobs = [
         'src/client/app.js'
@@ -41,10 +47,15 @@ gulp.task('build', function() {
     var bundler = browserify({
         debug: true,
         extensions: ['.js', '.jsx'],
-        entries: clientGlobs
+        entries: clientGlobs,
+        cache: {},
+        packageCache: {},
+        fullPaths: true
     });
 
     var bundler = watchify(bundler);
+    bundler.on('update', bundle);
+    bundler.on('log', gutil.log);
 
     function bundle() {
         return bundler

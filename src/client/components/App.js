@@ -1,5 +1,5 @@
 import React from "react";
-import Viewport from "./Viewport";
+import VideoPlayer from "./VideoPlayer";
 import VideoList from "./VideoList";
 import VideoStore from "../stores/VideoStore";
 import AppConstants from "../constants/AppConstants";
@@ -16,8 +16,8 @@ class App extends React.Component {
     }
 
     componentDidMount () {
-        VideoStore.on(AppConstants.VIDEO_PLAY, this._playVideo);
-        VideoStore.on(AppConstants.VIDEO_UPDATE, this._updateVideos);
+        VideoStore.on(AppConstants.VIDEO_PLAY, this._playVideo.bind(this));
+        VideoStore.on(AppConstants.VIDEO_UPDATE, this._updateVideos.bind(this));
         AppActions.fetchVideos();
     }
 
@@ -27,16 +27,21 @@ class App extends React.Component {
     }
 
     render () {
+        let videoPlayer;
+        if (this.state.activeVideo) {
+          videoPlayer = <VideoPlayer video={this.state.activeVideo} />
+        }
+
         return (
             <div id="app">
-                <Viewport video={this.state.activeVideo} />
+                {videoPlayer}
                 <VideoList videos={this.state.videos} />
             </div>
         );
     }
 
     _playVideo () {
-        let activeVideo = VideoStore.getActiveVideo();
+        let activeVideo = VideoStore.getActive();
         this.setState({ activeVideo });
     }
 

@@ -18,20 +18,33 @@ let VideoStore = assign({}, EventEmitter.prototype, {
             }
         });
         return value;
-    },
-    fetchVideos: fetchVideos
+    }
 });
 
 AppDispatcher.register((action) => {
 
     switch(action.actionType) {
         case AppConstants.VIDEO_PLAY:
-            _activeVideo = VideoStore.getVideoById(action.id);
+            _activeVideo = VideoStore.getById(action.id);
             VideoStore.emit(AppConstants.VIDEO_PLAY);
             break;
-        case AppConstants.ADD_VIDEO:
+        case AppConstants.VIDEO_ADD:
             _videos.push(action.item);
             VideoStore.emit(AppConstants.VIDEO_UPDATE);
+            if(_videos.length === 1) {
+                _activeVideo = _videos[0];
+                VideoStore.emit(AppConstants.VIDEO_PLAY);
+            }
+            break;
+        case AppConstants.VIDEO_NEXT:
+            var index = _videos.indexOf(_activeVideo) + 1;
+            _activeVideo = _videos[index % _videos.length];
+            VideoStore.emit(AppConstants.VIDEO_PLAY);
+            break;
+        case AppConstants.VIDEO_PREV:
+            var index = _videos.indexOf(_activeVideo) - 1;
+            _activeVideo = _videos[index % _videos.length];
+            VideoStore.emit(AppConstants.VIDEO_PLAY);
             break;
     }
 

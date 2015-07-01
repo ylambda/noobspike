@@ -2,12 +2,25 @@ import AppDispatcher from "../dispatcher/AppDispatcher";
 import AppConstants from "../constants/AppConstants";
 import querystring from "querystring";
 import url from "url";
+import assign from "object-assign";
 
 let AppActions = {
     play: (id) => {
         AppDispatcher.dispatch({
             actionType: AppConstants.VIDEO_PLAY,
             id: id
+        });
+    },
+
+    playNext: () => {
+        AppDispatcher.dispatch({
+            actionType: AppConstants.VIDEO_NEXT
+        });
+    },
+
+    playPrev: () => {
+        AppDispatcher.dispatch({
+            actionType: AppConstants.VIDEO_PREV
         });
     },
 
@@ -74,6 +87,6 @@ function parseGfycat(post) {
             mp4: data.gfyItem.mp4Url
         };
 
-        _videos.push(result);
+        AppActions.addItem(result);
     });
 }

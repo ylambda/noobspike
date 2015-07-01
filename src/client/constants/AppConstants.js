@@ -1,6 +1,9 @@
 export default {
     'VIDEO_PLAY': 'VIDEO_PLAY',
     'VIDEO_STOP': 'VIDEO_STOP',
+    'VIDEO_NEXT': 'VIDEO_NEXT',
+    'VIDEO_PREV': 'VIDEO_PREV',
+    'VIDEO_REPEAT': 'VIDEO_REPEAT',
     'VIDEO_ADD': 'VIDEO_ADD',
     'VIDEO_UPDATE': 'VIDEO_UPDATE',
 }

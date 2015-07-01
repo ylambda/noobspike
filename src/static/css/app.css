@@ -10,12 +10,12 @@ body {
   margin-bottom: 16px;
 }
 
-#viewport {
+#video-player {
   text-align: center;
   background: #000;
 }
 
-#viewport video {
+#video {
   max-width: 100%;
 }
 
