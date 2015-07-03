@@ -34,6 +34,11 @@ let AppActions = {
             item: item
         });
     }
+
+    changeSearchOptions: (name, value) {
+        defaultQueryParams[name] = value;
+        fetchVideos();
+    }
 }
 
 export default AppActions

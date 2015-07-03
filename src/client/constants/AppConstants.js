@@ -6,4 +6,5 @@ export default {
     'VIDEO_REPEAT': 'VIDEO_REPEAT',
     'VIDEO_ADD': 'VIDEO_ADD',
     'VIDEO_UPDATE': 'VIDEO_UPDATE',
+    'OPTION_CHANGE': 'OPTION_CHANGE',
 }

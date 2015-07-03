@@ -4,6 +4,7 @@ import VideoList from "./VideoList";
 import VideoStore from "../stores/VideoStore";
 import AppConstants from "../constants/AppConstants";
 import AppActions from "../actions/AppActions";
+import Header from "./Header.js";
 
 class App extends React.Component {
 
@@ -27,15 +28,23 @@ class App extends React.Component {
     }
 
     render () {
+
         let videoPlayer;
         if (this.state.activeVideo) {
           videoPlayer = <VideoPlayer video={this.state.activeVideo} />
         }
 
         return (
-            <div id="app">
-                {videoPlayer}
-                <VideoList videos={this.state.videos} />
+            <div id="app-container">
+                <Header />
+                <div className="container">
+                  <div className="col-xs-12">
+                      <section id="noobspike">
+                        {videoPlayer}
+                        <VideoList videos={this.state.videos} />
+                      </section>
+                  </div>
+                </div>
             </div>
         );
     }
