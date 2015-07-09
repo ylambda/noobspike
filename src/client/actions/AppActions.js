@@ -33,9 +33,9 @@ let AppActions = {
             actionType: AppConstants.VIDEO_ADD,
             item: item
         });
-    }
+    },
 
-    changeSearchOptions: (name, value) {
+    changeSearchOptions: (name, value) => {
         defaultQueryParams[name] = value;
         fetchVideos();
     }
