@@ -12,61 +12,43 @@ gulp.task('clean', function(done) {
     del(['build/**'], done);
 });
 
-gulp.task('build', function() {
+gulp.task('build', ['clean'], function() {
 
-/*
 
-    var serverGlobs = [
-        'src/**',
-        '!src/static/**',
-        '!src/views/**'
-    ];
+    var htmlGlobs = ['src/**.html'];
+    var staticGlobs = ['src/static/**'];
 
-    gulp.src(serverGlobs)
-        .pipe(watch(serverGlobs))
-        .pipe(babel())
+    gulp.src(htmlGlobs)
+        .pipe(watch(htmlGlobs))
         .pipe(gulp.dest('build'));
 
-    // build static
-    gulp.src(['src/static/**'])
-        .pipe(watch('/src/static/**'))
+    gulp.src(staticGlobs)
+        .pipe(watch(staticGlobs))
         .pipe(gulp.dest('build/static'));
-
-    // build views
-    gulp.src(['src/views/**'])
-        .pipe(watch('/src/static/**'))
-        .pipe(gulp.dest('build/views'));
-
- */
-
-    // build clientside
-    var clientGlobs = [
-        'src/client/app.js'
-    ];
 
     var bundler = browserify({
         debug: true,
         extensions: ['.js', '.jsx'],
-        entries: clientGlobs,
+        entries: ['src/client/app.js'],
         cache: {},
         packageCache: {},
         fullPaths: true
     });
 
-    var bundler = watchify(bundler);
+    bundler.transform(babelify);
+    bundler = watchify(bundler);
     bundler.on('update', bundle);
     bundler.on('log', gutil.log);
 
     function bundle() {
         return bundler
-            .transform(babelify)
             .bundle()
-            .on('error', function(err) { console.log(err.stack) })
+            .on('error', gutil.log.bind(gutil, 'Browserify Error'))
             .pipe(source('bundle.js'))
-            .pipe(gulp.dest('build/static/js'))
+            .pipe(gulp.dest('build/static/js'));
     }
 
     return bundle();
-})
+});
 
 gulp.task('default', ['clean', 'build']);
