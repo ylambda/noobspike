@@ -3,51 +3,75 @@ import AppConstants from "../constants/AppConstants";
 import {EventEmitter} from "events";
 import assign from "object-assign";
 
-let _videos = [];
-let _activeVideo = undefined;
+// Videos stored by id
+let videoItems = {};
+let videoList = [];
+let timeFilter = 'all';
 
-let VideoStore = assign({}, EventEmitter.prototype, {
-    getAll: () => { return _videos; },
-    getActive: () => { return _activeVideo; },
-    getById: (id) => {
-        var value = undefined;
-        _videos.some((video) => {
-            if(video.id === id) {
-                value = video;
-                return true;
-            }
-        });
-        return value;
+class VideoStore extends EventEmitter {
+
+    getVideo (id) {
+        return videoItems[id];
     }
-});
+
+    getAll () {
+        return videoList;
+    }
+
+    getTimeFilter () {
+        return timeFilter;
+    }
+}
+
+let video_store = new VideoStore();
+
+// parse json with a default value
+function parseJSON(json, defaultValue) {
+    return (json ? JSON.parse(json) : defaultValue);
+}
 
 AppDispatcher.register((action) => {
 
-    switch(action.actionType) {
-        case AppConstants.VIDEO_PLAY:
-            _activeVideo = VideoStore.getById(action.id);
-            VideoStore.emit(AppConstants.VIDEO_PLAY);
+    switch(action.action) {
+        case AppConstants.APP_START:
+            videoItems = parseJSON(sessionStorage.getItem('videoItems'), {});
+
+            // Save all videos to session storage before leaving
+            window.addEventListener('beforeunload', function() {
+                sessionStorage.setItem('videoItems', JSON.stringify(videoItems));
+            });
+
             break;
-        case AppConstants.VIDEO_ADD:
-            _videos.push(action.item);
-            VideoStore.emit(AppConstants.VIDEO_UPDATE);
-            if(_videos.length === 1) {
-                _activeVideo = _videos[0];
-                VideoStore.emit(AppConstants.VIDEO_PLAY);
+
+        case AppConstants.VIDEO_UPDATE:
+            videoItems[action.item.id] = action.item;
+            video_store.emit(AppConstants.VIDEO_UPDATE);
+            break;
+
+        case AppConstants.VIDEO_LIST_UPDATE:
+            videoList = action.item;
+            video_store.emit(AppConstants.VIDEO_LIST_UPDATE);
+            break;
+
+        case AppConstants.APP_UPDATE_FILTER:
+            if(action.item.type === 't') {
+                timeFilter = action.item.value;
             }
             break;
-        case AppConstants.VIDEO_NEXT:
-            var index = _videos.indexOf(_activeVideo) + 1;
-            _activeVideo = _videos[index % _videos.length];
-            VideoStore.emit(AppConstants.VIDEO_PLAY);
+
+        case AppConstants.VIDEO_DETAIL_UPDATE:
+            video_store.emit(AppConstants.VIDEO_DETAIL_UPDATE, action.item);
             break;
-        case AppConstants.VIDEO_PREV:
-            var index = _videos.indexOf(_activeVideo) - 1;
-            _activeVideo = _videos[index % _videos.length];
-            VideoStore.emit(AppConstants.VIDEO_PLAY);
+
+        case AppConstants.VIDEO_LIST_LOADING:
+            videoList = [];
+            video_store.emit(AppConstants.VIDEO_LIST_UPDATE);
             break;
+
+        
+        
     }
 
 })
 
-export default VideoStore
+export default video_store;

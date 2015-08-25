@@ -35,6 +35,7 @@ gulp.task('build', ['clean'], function() {
         fullPaths: true
     });
 
+    bundler.add(require.resolve("babel/polyfill"));
     bundler.transform(babelify);
     bundler = watchify(bundler);
     bundler.on('update', bundle);

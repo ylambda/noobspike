@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router";
 import AppActions from "../actions/AppActions";
 
 class VideoPlayer extends React.Component {
@@ -7,7 +8,8 @@ class VideoPlayer extends React.Component {
     super(props);
     this.state = {
       playCount: 0,
-      maxPlays: 2
+      maxPlays: 2,
+      overlay: "visible"
     }
   }
 
@@ -16,7 +18,9 @@ class VideoPlayer extends React.Component {
   }
 
   componentWillUpdate() {
-    this.setState({playCount: 0});
+    this.setState({
+      playCount: 0
+    });
   }
 
   componentDidMount() {
@@ -24,14 +28,12 @@ class VideoPlayer extends React.Component {
     video.addEventListener('ended', this._onVideoEnded.bind(this));
     video.addEventListener('play', this._onPlay.bind(this));
     video.addEventListener('pause', this._onPause.bind(this));
-  }
-
-  componentWillUnmount() {
+    video.addEventListener('canplaythrough', this._onCanPlay.bind(this));
   }
 
   render () {
       let video = (
-        <video id="video" autoPlay
+        <video id="video" loop="true" onClick={this._onClickPlay.bind(this)}
           ref="video" data-videoid={this.props.video ? this.props.video.id : ""}
           src={ this.props.video ? this.props.video.webm : "" } >
         </video>
@@ -41,24 +43,19 @@ class VideoPlayer extends React.Component {
       <div id="video-container">
         <div id="video-player">
           {video}
-          <div id="video-controls">
-            <button id="play-pause-button" type="button" onClick={this._onClickPlay.bind(this)}>
+          <div id="video-controls" className="text-left">
+            <button id="play-pause-button" type="button">
               <span className="glyphicon glyphicon-play"></span>
             </button>
-            <input id="seek" type="range" />
+            {/*
             <button type="button" onClick={this._playPrev.bind(this)}>
               <span className="glyphicon glyphicon-step-backward"></span>
             </button>
             <button type="button" onClick={this._playNext.bind(this)}>
               <span className="glyphicon glyphicon-step-forward"></span>
             </button>
+            */}
           </div>
-        </div>
-        <div id="video-description">
-          <div className="video-title">
-            { this.props.video.title }
-          </div>
-          by <a href="#">{this.props.video.author}</a>
         </div>
       </div>
     )
@@ -81,6 +78,11 @@ class VideoPlayer extends React.Component {
     }
   }
 
+  _onCanPlay (event) {
+    let video = this.refs.video.getDOMNode();
+    video.play();
+  }
+
   _playNext (event) {
     if (!document.hidden) {
       AppActions.playNext();
@@ -101,6 +103,7 @@ class VideoPlayer extends React.Component {
     let buttonIcon = document.getElementById("play-pause-button").children[0];
     buttonIcon.classList.remove('glyphicon-play');
     buttonIcon.classList.add('glyphicon-pause');
+
   }
 
   _onPause() {
