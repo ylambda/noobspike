@@ -1,42 +1,40 @@
 {
   "name": "noobspike",
   "version": "1.0.0",
-  "description": "noobspike",
-  "main": "js/app.js",
+  "description": "noobspike.com app",
+  "main": "''",
   "dependencies": {
-    "babelify": "^6.1.2",
-    "bookshelf": "^0.8.1",
-    "browserify": "^10.2.4",
-    "ejs": "^2.3.1",
-    "flux": "^2.0.3",
-    "gulp-util": "^3.0.6",
-    "gulp-watch": "^4.2.4",
-    "knex": "^0.8.6",
-    "object-assign": "^3.0.0",
-    "sqlite3": "^3.0.8",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.2.3",
-    "xhttp": "0.0.6"
-  },
-  "devDependencies": {
-    "browserify": "^6.2.0",
-    "del": "^1.2.0",
-    "envify": "^3.0.0",
+    "babel": "^5.8.21",
+    "browserify": "^11.0.1",
+    "del": "^1.2.1",
     "gulp": "^3.9.0",
-    "gulp-babel": "^5.1.0",
-    "reactify": "^0.15.2",
-    "uglify-js": "~2.4.15",
-    "watchify": "^2.1.1"
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-util": "^3.0.6",
+    "gulp-watch": "^4.3.5",
+    "object-assign": "^4.0.1",
+    "react": "^0.13.3",
+    "react-router": "^0.13.3",
+    "vinyl-buffer": "^1.0.0",
+    "flux": "^2.1.1",
+    "vinyl-source-stream": "^1.1.0",
+    "babelify": "^6.2.0",
+    "watchify": "^3.3.1"
   },
+  "devDependencies": {},
   "scripts": {
-    "start": "watchify -o public/js/bundle.js -v -d public/js/app.js",
-    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > public/js/bundle.min.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ylambda/noobspike.git"
   },
+  "keywords": [
+    "noobspike"
+  ],
   "author": "ylambda",
-  "license": "MIT"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ylambda/noobspike/issues"
+  },
+  "homepage": "https://github.com/ylambda/noobspike#readme"
 }
