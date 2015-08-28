@@ -1,54 +1,12 @@
 import React from "react";
 import {Link} from "react-router";
 import VideoPlayer from "./VideoPlayer";
-import VideoItem from "./VideoItem";
-import VideoStore from "../stores/VideoStore";
-import AppConstants from "../constants/AppConstants";
-import AppActions from "../actions/AppActions";
 
 class VideoDetail extends React.Component {
 
-    constructor (props) {
-        super(props);
-        this.state = {
-            video: VideoStore.getVideo(props.params.id),
-            videos: VideoStore.getAll()
-        }
-    }
-
-    componentDidMount () {
-        VideoStore.on(AppConstants.VIDEO_DETAIL_UPDATE, this._changeVideo.bind(this));
-        VideoStore.on(AppConstants.VIDEO_LIST_UPDATE, this._changeVideos.bind(this));
-        if(!this.state.video) {
-            let video = this.props.params.id;
-            AppActions.fetchVideo(video);
-        }
-
-        if(!this.state.videos.length) {
-            AppActions.fetchVideos();
-        }
-
-    }
-
-    componentWillReceiveProps (nextProps) {
-
-        let videos = VideoStore.getAll();
-        let videoIndex = videos.find(video => video.id == nextProps.params.id);
-
-        this.setState({
-            video: VideoStore.getVideo(nextProps.params.id),
-            videos: videos.slice(videoIndex+1, 4)
-        });
-    }
-
-    componentWillUnmount () {
-        VideoStore.removeListener(AppConstants.VIDEO_DETAIL_UPDATE, this._changeVideo.bind(this));
-        VideoStore.removeListener(AppConstants.VIDEO_LIST_UPDATE, this._changeVideos.bind(this));
-    }
-
     render() {
 
-        let videos = this.state.videos.map( (video, key) => {
+        let videos = this.props.videos.map( (video, key) => {
             return (
                 <div className="col-xs-12" key={video.id}>
                   <div className="playlist-item">
@@ -82,8 +40,8 @@ class VideoDetail extends React.Component {
         });
 
         let videoPlayer;
-        if (this.state.video) {
-          videoPlayer = <VideoPlayer video={this.state.video} />
+        if (this.props.video) {
+          videoPlayer = <VideoPlayer video={this.props.video} />
         }
 
         return (
@@ -93,15 +51,15 @@ class VideoDetail extends React.Component {
                    { videoPlayer }
                     <div className="video-detail">
                         <div className={"video-score"}
-                             title={`${this.state.video.score} upvotes`}>
-                            { this.state.video.score }
+                             title={`${this.props.video.score} upvotes`}>
+                            { this.props.video.score }
                         </div>
                         <div className={"video-description"}>
                           <div className="video-title ">
-                            { this.state.video.title }
+                            { this.props.video.title }
                           </div>
-                          by <Link to="user-video-list" params={{username: this.state.video.author}}>
-                             { this.state.video.author }
+                          by <Link to="user-video-list" params={{username: this.props.video.author}}>
+                             { this.props.video.author }
                             </Link>
                         </div>
                     </div>
@@ -112,14 +70,6 @@ class VideoDetail extends React.Component {
               </div>
           </div>
         )
-    }
-
-    _changeVideo (video) {
-        this.setState({video: video});
-    }
-
-    _changeVideos (videos) {
-        this.setState({videos: VideoStore.getAll()});
     }
 }
 

@@ -6,40 +6,19 @@ import url from "url";
 import assign from "object-assign";
 import { getJSON } from "../utils";
 
+function logError (err) {
+  console.error(err.stack);
+}
 
 let AppActions = {
-    startApp: () => {
-        AppDispatcher.dispatch({
-            action: AppConstants.APP_START
-        });
-    },
-
-    stopApp: () => {
-        AppDispatcher.dispatch({
-            action: AppConstants.APP_STOP
-        });
-    },
-
-    updateFilter: (filter) => {
-        AppDispatcher.dispatch({
-            action: AppConstants.APP_UPDATE_FILTER,
-            item: {type: 't', value: filter}
-        });
-    },
-
-    fetchVideos: (params={}) => {
+    fetchVideos: (params) => {
         let promise = fetchRedditSearchListing(params);
         promise.then(function(items) {
             AppDispatcher.dispatch({
-                action: AppConstants.VIDEO_LIST_UPDATE,
+                action: AppConstants.VIDEO_LIST_CHANGE,
                 item: items
             });
-        }).catch(function(err) { console.log(err) });
-
-        AppDispatcher.dispatch({
-            action: AppConstants.VIDEO_LIST_LOADING
-        });
-
+        }).catch(logError);
     },
 
     fetchVideo: (video) => {
@@ -49,7 +28,7 @@ let AppActions = {
                 action: AppConstants.VIDEO_DETAIL_UPDATE,
                 item: items[0]
             });
-        }).catch((err) => { console.log(err); });
+        }).catch(logError);
     },
 
     updateVideo: (item) => {

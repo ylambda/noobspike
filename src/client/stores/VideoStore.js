@@ -30,27 +30,27 @@ function parseJSON(json, defaultValue) {
     return (json ? JSON.parse(json) : defaultValue);
 }
 
+videoItems = parseJSON(sessionStorage.getItem('videoItems'), {});
+
+// Save all videos to session storage before leaving
+window.addEventListener('beforeunload', function() {
+    sessionStorage.setItem('videoItems', JSON.stringify(videoItems));
+});
+
+
 AppDispatcher.register((action) => {
 
     switch(action.action) {
-        case AppConstants.APP_START:
-            videoItems = parseJSON(sessionStorage.getItem('videoItems'), {});
-
-            // Save all videos to session storage before leaving
-            window.addEventListener('beforeunload', function() {
-                sessionStorage.setItem('videoItems', JSON.stringify(videoItems));
-            });
-
-            break;
 
         case AppConstants.VIDEO_UPDATE:
             videoItems[action.item.id] = action.item;
             video_store.emit(AppConstants.VIDEO_UPDATE);
             break;
 
-        case AppConstants.VIDEO_LIST_UPDATE:
+        case AppConstants.VIDEO_LIST_CHANGE:
+            console.log('video list change');
             videoList = action.item;
-            video_store.emit(AppConstants.VIDEO_LIST_UPDATE);
+            video_store.emit(AppConstants.VIDEO_LIST_CHANGE);
             break;
 
         case AppConstants.APP_UPDATE_FILTER:
@@ -68,8 +68,6 @@ AppDispatcher.register((action) => {
             video_store.emit(AppConstants.VIDEO_LIST_UPDATE);
             break;
 
-        
-        
     }
 
 })
