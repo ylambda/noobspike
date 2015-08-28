@@ -38,10 +38,10 @@ class VideoListController extends React.Component {
 
   fetchVideos (query, params) {
 
-    let filter = {
-      'sort': query.sort,
-      't': query.t,
-      'author': params.username,
+    let filter = assign({}, query);
+    if(params.username) {
+        filter.q = filter.q || '';
+        filter.q += ` author:${params.username}`;
     }
 
     AppActions.fetchVideos(filter);
