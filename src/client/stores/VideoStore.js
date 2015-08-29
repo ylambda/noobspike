@@ -6,7 +6,18 @@ import assign from "object-assign";
 // Videos stored by id
 let videoItems = {};
 let videoList = [];
+let videoListPagination = {before: null, after: null};
 let timeFilter = 'all';
+let settings = {
+  'subreddits': ['tagpro'],
+  'listing_length': 24,
+  'default_filter': {
+    sort: 'top',
+    t: 'week',
+    q: '',
+    show: 'all'
+  }
+}
 
 class VideoStore extends EventEmitter {
 
@@ -31,6 +42,14 @@ class VideoStore extends EventEmitter {
       playlist = playlist.slice(0, playlistSize);
 
       return playlist;
+    }
+
+    getSettings () {
+      return settings;
+    }
+
+    getPagination () {
+      return videoListPagination;
     }
 }
 
@@ -59,8 +78,8 @@ AppDispatcher.register((action) => {
             break;
 
         case AppConstants.VIDEO_LIST_CHANGE:
-            console.log('video list change');
-            videoList = action.item;
+            videoList = action.item.items;
+            videoListPagination = {before: action.item.before, after: action.item.after};
             video_store.emit(AppConstants.VIDEO_LIST_CHANGE);
             break;
 

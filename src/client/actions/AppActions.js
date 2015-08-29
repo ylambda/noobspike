@@ -42,15 +42,15 @@ let AppActions = {
 export default AppActions
 
 
-let subreddits = ['tagpro'];
-let defaultParams = { sort: 'top', t: 'week', q: '', }
+let { default_filter, subreddits, listing_length } = VideoStore.getSettings();
 function fetchRedditSearchListing(params={}) {
     
     // Force restrict to specified subreddit
-    let queryParams = assign(defaultParams, params, {restrict_sr:'on'});
+    let queryParams = assign(default_filter, params, {restrict_sr:'on'});
 
     // For now only allow gfycat
     queryParams['q'] = 'site:gfycat.com ' + queryParams['q'];
+    queryParams['limit'] = listing_length;
 
     let subreddit = subreddits.join('+');
     let qs = querystring.stringify(queryParams);
@@ -72,7 +72,16 @@ function parseRedditListing(response) {
         }
     });
 
-    return Promise.all(promises);
+    let promise = Promise.all(promises);
+    promise = promise.then((items) => {
+      return {
+        items: items,
+        before: response.data.before,
+        after: response.data.after,
+      }
+    });
+
+    return promise;
 }
 
 function fetchRedditThread(thread_id) {

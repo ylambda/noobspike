@@ -16,7 +16,8 @@ class VideoListController extends React.Component {
   calculateState (nextProps) {
     return {
       videos: VideoStore.getAll(),
-      time_option: 'week'
+      time_option: 'week',
+      pagination: VideoStore.getPagination(),
     }
   }
 

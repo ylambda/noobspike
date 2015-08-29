@@ -12,10 +12,17 @@ class VideoDetail extends React.Component {
             <div className="col-sm-8 col-xs-12">
               <VideoPlayer video={this.props.video} />
               <div className="video-detail">
-                <div className={"video-score"} title={`${this.props.video.score} upvotes`}>
-                  { this.props.video.score }
+                <div className="stats">
+                  <div className={"single-stat score"} title={`${this.props.video.score} upvotes`}>
+                    <span className={"glyphicon glyphicon-arrow-up"}></span>
+                    { this.props.video.score }
+                  </div>
+                  <div className={"single-stat views"} title={`${this.props.video.views} views`}>
+                    <span className={"glyphicon glyphicon-eye-open"}></span>
+                    { this.props.video.views }
+                  </div>
                 </div>
-                <div className="video-description">
+                <div className="description">
                   <div className="video-title">
                     { this.props.video.title }
                   </div>
@@ -23,6 +30,7 @@ class VideoDetail extends React.Component {
                    { this.props.video.author }
                   </Link>
                 </div>
+                <div className="clearfix"></div>
               </div>
             </div>
             <div className="col-sm-4 col-xs-12">

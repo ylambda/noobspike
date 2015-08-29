@@ -15,7 +15,7 @@ class VideoDetailController extends React.Component {
 
   calculateState () {
     return {
-      playlist: VideoStore.getPlaylist(),
+      playlist: VideoStore.getPlaylist(this.props.params.id),
       video: VideoStore.getVideo(this.props.params.id)
     }
   }
