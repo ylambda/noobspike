@@ -43,6 +43,7 @@ class VideoListController extends React.Component {
     if(params.username) {
         filter.q = filter.q || '';
         filter.q += ` author:${params.username}`;
+        filter.t = undefined;
     }
 
     AppActions.fetchVideos(filter);

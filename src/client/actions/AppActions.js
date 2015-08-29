@@ -46,7 +46,7 @@ let { default_filter, subreddits, listing_length } = VideoStore.getSettings();
 function fetchRedditSearchListing(params={}) {
     
     // Force restrict to specified subreddit
-    let queryParams = assign(default_filter, params, {restrict_sr:'on'});
+    let queryParams = assign({}, default_filter, params, {restrict_sr:'on'});
 
     // For now only allow gfycat
     queryParams['q'] = 'site:gfycat.com ' + queryParams['q'];
