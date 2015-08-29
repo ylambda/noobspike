@@ -21,6 +21,17 @@ class VideoStore extends EventEmitter {
     getTimeFilter () {
         return timeFilter;
     }
+
+    getPlaylist (id) {
+
+      let playlistSize = 10;
+      let playlist = this.getAll();
+
+      playlist = playlist.filter((video => video.id !== id));
+      playlist = playlist.slice(0, playlistSize);
+
+      return playlist;
+    }
 }
 
 let video_store = new VideoStore();

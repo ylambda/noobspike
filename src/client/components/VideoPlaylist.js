@@ -41,4 +41,6 @@ class VideoPlaylist extends React.Component {
   }
 }
 
+VideoPlaylist.defaultProps = { items: [] };
+
 export default VideoPlaylist;
