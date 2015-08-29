@@ -9,7 +9,7 @@ class VideoDetail extends React.Component {
       return (
         <div id="video-detail-view">
           <div className="row">
-            <div className="col-xs-8">
+            <div className="col-sm-8 col-xs-12">
               <VideoPlayer video={this.props.video} />
               <div className="video-detail">
                 <div className={"video-score"} title={`${this.props.video.score} upvotes`}>
@@ -25,7 +25,7 @@ class VideoDetail extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="col-xs-4">
+            <div className="col-sm-4 col-xs-12">
               <VideoPlaylist items={this.props.playlist} />
             </div>
           </div>
