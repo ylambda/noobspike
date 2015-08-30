@@ -7,7 +7,7 @@ import assign from "object-assign";
 let videoItems = {};
 let videoList = [];
 let videoListPagination = {before: null, after: null};
-let timeFilter = 'all';
+let timeFilter = 'week';
 let settings = {
   'subreddits': ['tagpro'],
   'listing_length': 24,
@@ -61,10 +61,12 @@ function parseJSON(json, defaultValue) {
 }
 
 videoItems = parseJSON(sessionStorage.getItem('videoItems'), {});
+timeFilter = localStorage.getItem('time_filter') || timeFilter;
 
 // Save all videos to session storage before leaving
 window.addEventListener('beforeunload', function() {
     sessionStorage.setItem('videoItems', JSON.stringify(videoItems));
+    localStorage.setItem('time_filter', timeFilter);
 });
 
 
@@ -83,21 +85,16 @@ AppDispatcher.register((action) => {
             video_store.emit(AppConstants.VIDEO_LIST_CHANGE);
             break;
 
-        case AppConstants.APP_UPDATE_FILTER:
+        case AppConstants.FILTER_CHANGE:
             if(action.item.type === 't') {
-                timeFilter = action.item.value;
+              timeFilter = action.item.value;
+              video_store.emit(AppConstants.VIDEO_LIST_CHANGE);
             }
             break;
 
         case AppConstants.VIDEO_DETAIL_UPDATE:
             video_store.emit(AppConstants.VIDEO_DETAIL_UPDATE, action.item);
             break;
-
-        case AppConstants.VIDEO_LIST_LOADING:
-            videoList = [];
-            video_store.emit(AppConstants.VIDEO_LIST_UPDATE);
-            break;
-
     }
 
 })

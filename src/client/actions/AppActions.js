@@ -12,6 +12,14 @@ function logError (err) {
 
 let AppActions = {
     fetchVideos: (params) => {
+
+        if(params.t) {
+          AppDispatcher.dispatch({
+            action: AppConstants.FILTER_CHANGE,
+            item: {type: 't', value: params.t}
+          });
+        }
+
         let promise = fetchRedditSearchListing(params);
         promise.then(function(items) {
             AppDispatcher.dispatch({

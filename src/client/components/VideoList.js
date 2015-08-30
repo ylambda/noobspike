@@ -6,7 +6,7 @@ import VideoStore from "../stores/VideoStore";
 import DropdownMenu from "./DropdownMenu";
 import assign from "object-assign";
 
-let time_options = new Map([
+let time_filters = new Map([
   ["hour", "Hour"],
   ["day", "24 hours"],
   ["week", "Week"],
@@ -23,19 +23,19 @@ class VideoList extends React.Component {
     let params = this.props.params;
 
     let items = {};
-    for(let [key, value] of time_options) {
-      let option = items[key] = {};
-      option.label = value;
-      option.to = 'video-list';
-      option.query = assign({}, query, {t: key, before: undefined, after: undefined});
-      option.params = params;
+    for(let [key, value] of time_filters) {
+      let filter = items[key] = {};
+      filter.label = value;
+      filter.to = 'video-list';
+      filter.query = assign({}, query, {t: key, before: undefined, after: undefined});
+      filter.params = params;
     }
 
     return items;
   }
 
   getTimeLabel () {
-    return time_options.get(this.props.time_option);
+    return time_filters.get(this.props.time_filter);
   }
 
   render () {
@@ -84,7 +84,7 @@ class VideoList extends React.Component {
         <div className="filters">
           <div className="row">
             <div className="col-xs-12">
-              { time_dropdown }
+              { this.props.params.username ? undefined : time_dropdown }
             </div>
           </div>
         </div>

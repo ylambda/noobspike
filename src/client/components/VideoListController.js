@@ -14,9 +14,10 @@ class VideoListController extends React.Component {
   }
 
   calculateState (nextProps) {
+    let time_filter = nextProps ? nextProps.query.t : this.props.query.t
     return {
       videos: VideoStore.getAll(),
-      time_option: 'week',
+      time_filter: time_filter || VideoStore.getTimeFilter(),
       pagination: VideoStore.getPagination(),
     }
   }
@@ -30,6 +31,7 @@ class VideoListController extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    this.calculateState(nextProps);
     this.fetchVideos(nextProps.query, nextProps.params);
   }
 

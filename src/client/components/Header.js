@@ -51,7 +51,7 @@ class HeaderNavMenu extends React.Component {
   render () {
 
     let items = this.props.items.map((item) => {
-      let query = assign({}, {}, item.query);
+      let query = assign({}, item.query);
       return (
         <li key={item.label}>
           <Link className={"btn btn-default"}
