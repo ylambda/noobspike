@@ -20,6 +20,10 @@ a:focus {
   position: relative;
 }
 
+.header .title {
+  margin-right: 15px;
+}
+
 #video-player {
   text-align: center;
   background: #000;

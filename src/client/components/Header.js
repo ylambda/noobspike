@@ -22,12 +22,12 @@ class Header extends React.Component {
         let header = (
             <div className="header">
               <div className="container">
-                <div className="col-xs-2">
-                  <h4><a href="/">Noobspike</a></h4>
-                </div>
-                <div className="col-xs-10">
-                  <div className="row">
-                    <div className="col-xs-8">
+                <div className="row">
+                  <div className="col-xs-12">
+                    <div className={"pull-left title"}>
+                      <h4><a href="/">Noobspike</a></h4>
+                    </div>
+                    <div className="pull-left">
                       <Header.NavMenu items={options.nav} />
                     </div>
                   </div>

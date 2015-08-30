@@ -10,10 +10,12 @@ class App extends React.Component {
         <div id="app-container">
           <Header />
           <div className="container">
-            <div className="col-xs-12">
-              <section id="noobspike">
-                <RouteHandler />
-              </section>
+            <div className="row">
+              <div className="col-xs-12">
+                <section id="noobspike">
+                  <RouteHandler />
+                </section>
+              </div>
             </div>
           </div>
         </div>
