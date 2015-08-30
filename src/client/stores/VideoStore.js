@@ -2,6 +2,7 @@ import AppDispatcher from "../dispatcher/AppDispatcher";
 import AppConstants from "../constants/AppConstants";
 import {EventEmitter} from "events";
 import assign from "object-assign";
+import { shuffle } from "../utils";
 
 // Videos stored by id
 let videoItems = {};
@@ -35,11 +36,23 @@ class VideoStore extends EventEmitter {
 
     getPlaylist (id) {
 
-      let playlistSize = 10;
-      let playlist = this.getAll();
+      let size = 10;
+      let videos = this.getAll().filter((video => video.id !== id));
 
-      playlist = playlist.filter((video => video.id !== id));
-      playlist = playlist.slice(0, playlistSize);
+      // limit to 10 items or less
+      if(videos.length < size) {
+        size = videos.length;
+      }
+      
+      let index = videoList.findIndex(video => video.id === id)
+      let end = index + size;
+      end = (videos.length >= end )  ? end : videos.length
+
+      let playlist = videos.slice(index, end);
+      if(playlist.length < size) {
+        let remaining = size - playlist.length;
+        playlist = playlist.concat(videos.slice(0, remaining));
+      }
 
       return playlist;
     }
