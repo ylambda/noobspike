@@ -6,6 +6,12 @@ import VideoPlaylist from "./VideoPlaylist";
 class VideoDetail extends React.Component {
 
     render() {
+
+      // temp fix; should show loading screen or 404
+      // when there is no video
+      if (!this.props.video)
+          return (<div>Loading</div>);
+
       return (
         <div id="video-detail-view">
           <div className="row">
