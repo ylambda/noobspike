@@ -22,7 +22,6 @@ let AppActions = {
 
         let promise = fetchRedditSearchListing(params);
         promise.then(function(items) {
-            console.log(items);
             AppDispatcher.dispatch({
                 action: AppConstants.VIDEO_LIST_CHANGE,
                 item: items
@@ -118,11 +117,13 @@ function fetchGfycatDetail(redditPost) {
             if(data.error) {
                 return null;
             }
+        console.log(redditPost.author_flair_css_class);
         let result = {
             id: redditPost.id,
             video_id: gfycatId,
             title: redditPost.title,
             author: redditPost.author,
+            authorFlair: redditPost.author_flair_css_class,
             thumbnail:  `//thumbs.gfycat.com/${gfycatId}-poster.jpg`,
             small_thumbnail:  `//thumbs.gfycat.com/${gfycatId}-thumb100.jpg`,
             webm: data.gfyItem.webmUrl,

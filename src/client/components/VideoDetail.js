@@ -26,7 +26,8 @@ class VideoDetail extends React.Component {
                   <div className="video-title">
                     { this.props.video.title }
                   </div>
-                  by <Link to="user-video-list" params={{username: this.props.video.author}}>
+                  <Link to="user-video-list" params={{username: this.props.video.author}}>
+                   <span className={"flair flair-"+this.props.video.authorFlair}></span>
                    { this.props.video.author }
                   </Link>
                 </div>

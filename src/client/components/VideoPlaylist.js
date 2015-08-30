@@ -16,8 +16,7 @@ class VideoPlaylist extends React.Component {
                 <Link to="video-detail" params={{id: video.id}}>
                   <div className="title" dangerouslySetInnerHTML={{__html:video.title}} ></div>
                   <div className="username">
-                    by <span className={"flair flair-"+video.authorFlair}></span>
-                    { video.author }
+                    by { video.author }
                   </div>
                   <div className={"single-stat score"}>
                     <span className={"glyphicon glyphicon-arrow-up"}></span>
