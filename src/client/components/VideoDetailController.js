@@ -22,12 +22,16 @@ class VideoDetailController extends React.Component {
 
   componentDidMount () {
     VideoStore.on(AppConstants.VIDEO_DETAIL_UPDATE, this.change.bind(this));
-    VideoStore.on(AppConstants.VIDEO_LIST_UPDATE, this.change.bind(this));
+    VideoStore.on(AppConstants.VIDEO_LIST_CHANGE, this.change.bind(this));
+
+    if(this.state.playlist.length === 0) {
+      AppActions.fetchVideos();
+    }
   }
 
   componentWillUnmount () {
     VideoStore.removeListener(AppConstants.VIDEO_DETAIL_UPDATE, this.change.bind(this));
-    VideoStore.removeListener(AppConstants.VIDEO_LIST_UPDATE, this.change.bind(this));
+    VideoStore.removeListener(AppConstants.VIDEO_LIST_CHANGE, this.change.bind(this));
   }
 
   componentWillReceiveProps (nextProps) {

@@ -11,7 +11,7 @@ function logError (err) {
 }
 
 let AppActions = {
-    fetchVideos: (params) => {
+    fetchVideos: (params={}) => {
 
         if(params.t) {
           AppDispatcher.dispatch({
