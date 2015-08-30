@@ -110,7 +110,7 @@ function shouldFetchDetails(video) {
 function fetchGfycatDetail(redditPost) {
     let pathname = url.parse(redditPost.url).pathname;
     let gfycatId = pathname.replace('/', '');
-    let endpoint = `http://gfycat.com/cajax/get/${gfycatId}`;
+    let endpoint = `https://gfycat.com/cajax/get/${gfycatId}`;
 
     let promise = getJSON(endpoint)
         .then((data) => {
