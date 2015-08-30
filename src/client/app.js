@@ -20,6 +20,7 @@ let routes = (
 let AppRouter = Router.create({
   routes: routes,
   location: Router.HashLocation,
+  scrollBehaviour: Router.ScrollToTopBehavior
 });
 
 AppRouter.run((Root) => {
