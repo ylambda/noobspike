@@ -43,7 +43,7 @@ class VideoList extends React.Component {
     let time_dropdown = <DropdownMenu items={this.getTimeItems()} label={this.getTimeLabel()} />
 
     let videos = this.props.videos.map( (video, key, index) => {
-      return <VideoItem video={video} key={key} />
+      return <VideoItem video={video} key={video.id} />
     });
 
     let next;

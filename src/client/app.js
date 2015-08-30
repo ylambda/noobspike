@@ -17,6 +17,11 @@ let routes = (
   </Route>
 );
 
-Router.run(routes, Router.HashLocation, (Root) => {
+let AppRouter = Router.create({
+  routes: routes,
+  location: Router.HashLocation,
+});
+
+AppRouter.run((Root) => {
   React.render(<Root />, document.body);
 });
