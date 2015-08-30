@@ -12,7 +12,6 @@ export function get(url) {
     req.onload = function() {
       // This is called even on 404 etc
       // so check the status
-      console.log(req.status);
       if (req.status == 200) {
         // Resolve the promise with the response text
         resolve(req.response);
