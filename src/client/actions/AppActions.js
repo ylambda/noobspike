@@ -22,6 +22,7 @@ let AppActions = {
 
         let promise = fetchRedditSearchListing(params);
         promise.then(function(items) {
+            console.log(items);
             AppDispatcher.dispatch({
                 action: AppConstants.VIDEO_LIST_CHANGE,
                 item: items
@@ -52,7 +53,7 @@ export default AppActions
 
 let { default_filter, subreddits, listing_length } = VideoStore.getSettings();
 function fetchRedditSearchListing(params={}) {
-    
+
     // Force restrict to specified subreddit
     let queryParams = assign({}, default_filter, params, {restrict_sr:'on'});
 
@@ -83,7 +84,7 @@ function parseRedditListing(response) {
     let promise = Promise.all(promises);
     promise = promise.then((items) => {
       return {
-        items: items,
+        items: items.filter(item => { return item !== null }),
         before: response.data.before,
         after: response.data.after,
       }
@@ -114,6 +115,9 @@ function fetchGfycatDetail(redditPost) {
 
     let promise = getJSON(endpoint)
         .then((data) => {
+            if(data.error) {
+                return null;
+            }
         let result = {
             id: redditPost.id,
             video_id: gfycatId,

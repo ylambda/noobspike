@@ -7,13 +7,13 @@ import assign from "object-assign";
 let videoItems = {};
 let videoList = [];
 let videoListPagination = {before: null, after: null};
-let timeFilter = 'week';
+let timeFilter = localStorage.getItem('time_filter') || 'week';
 let settings = {
   'subreddits': ['tagpro'],
   'listing_length': 24,
   'default_filter': {
     sort: 'top',
-    t: 'week',
+    t: timeFilter || 'week',
     q: '',
     show: 'all'
   }
@@ -61,7 +61,6 @@ function parseJSON(json, defaultValue) {
 }
 
 videoItems = parseJSON(sessionStorage.getItem('videoItems'), {});
-timeFilter = localStorage.getItem('time_filter') || timeFilter;
 
 // Save all videos to session storage before leaving
 window.addEventListener('beforeunload', function() {
