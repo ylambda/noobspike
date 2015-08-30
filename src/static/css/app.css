@@ -284,6 +284,7 @@ a:focus {
   background: #111;
   padding: 15px;
   color: #a7a7a7;
+  margin-bottom: 15px;
 }
 
 .video-playlist li {
