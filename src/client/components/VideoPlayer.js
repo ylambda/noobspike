@@ -28,12 +28,11 @@ class VideoPlayer extends React.Component {
     video.addEventListener('ended', this._onVideoEnded.bind(this));
     video.addEventListener('play', this._onPlay.bind(this));
     video.addEventListener('pause', this._onPause.bind(this));
-    video.addEventListener('canplaythrough', this._onCanPlay.bind(this));
   }
 
   render () {
       let video = (
-        <video id="video" loop="true" onClick={this._onClickPlay.bind(this)}
+        <video id="video" loop="true" autoPlay="true" onClick={this._onClickPlay.bind(this)}
           ref="video" data-videoid={this.props.video ? this.props.video.id : ""}
           src={ this.props.video ? this.props.video.webm : "" } >
         </video>
