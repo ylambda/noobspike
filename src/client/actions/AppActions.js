@@ -16,7 +16,7 @@ let AppActions = {
         if(params.t) {
           AppDispatcher.dispatch({
             action: AppConstants.FILTER_CHANGE,
-            item: {type: 't', value: params.t}
+            data: {type: 't', value: params.t}
           });
         }
 
@@ -24,7 +24,7 @@ let AppActions = {
         promise.then(function(items) {
             AppDispatcher.dispatch({
                 action: AppConstants.VIDEO_LIST_CHANGE,
-                item: items
+                data: items
             });
         }).catch(logError);
     },
@@ -34,7 +34,7 @@ let AppActions = {
         promise.then((items) => {
             AppDispatcher.dispatch({
                 action: AppConstants.VIDEO_DETAIL_UPDATE,
-                item: items[0]
+                data: items[0]
             });
         }).catch(logError);
     },
@@ -42,7 +42,7 @@ let AppActions = {
     updateVideo: (item) => {
         AppDispatcher.dispatch({
             action: AppConstants.VIDEO_UPDATE,
-            item: item
+            data: item
         });
     }
 }
@@ -117,7 +117,6 @@ function fetchGfycatDetail(redditPost) {
             if(data.error) {
                 return null;
             }
-        console.log(redditPost.author_flair_css_class);
         let result = {
             id: redditPost.id,
             video_id: gfycatId,

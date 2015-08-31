@@ -87,13 +87,15 @@ AppDispatcher.register((action) => {
     switch(action.action) {
 
         case AppConstants.VIDEO_UPDATE:
-            videoItems[action.item.id] = action.item;
+            let video = action.data;
+            videoItems[video.id] = video;
             video_store.emit(AppConstants.VIDEO_UPDATE);
             break;
 
         case AppConstants.VIDEO_LIST_CHANGE:
-            videoList = action.item.items;
-            videoListPagination = {before: action.item.before, after: action.item.after};
+            let listing = action.data;
+            videoList = listing.items;
+            videoListPagination = {before: listing.before, after: listing.after};
             video_store.emit(AppConstants.VIDEO_LIST_CHANGE);
             break;
 
