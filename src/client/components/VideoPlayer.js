@@ -33,10 +33,8 @@ class VideoPlayer extends React.Component {
   render () {
 
       let video = (
-        <video id="video" loop="true" autoPlay="true" onClick={this._onClickPlay.bind(this)}
-          ref="video">
-          <source id="webmsource" src={this.props.video.webm} type="video/webm" />
-          <source id="mp4source" src={this.props.video.mp4} type="video/mp4" />
+        <video id="video" className={this.props.video.id} loop="true" autoPlay="true" onClick={this._onClickPlay.bind(this)}
+          ref="video" src={this.props.video ? this.props.video.webm : ""} >
         </video>
         )
 
