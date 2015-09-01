@@ -18,7 +18,7 @@ class VideoDetail extends React.Component {
         <div id="video-detail-view">
           <div className="row">
             <div className="col-sm-8 col-xs-12">
-              <VideoPlayer video={this.props.video} />
+              <VideoPlayer key={this.props.video.id} video={this.props.video} />
               <div className="video-detail">
                 <div className="stats">
                   <div className={"single-stat score"} title={`${this.props.video.score} upvotes`}>
