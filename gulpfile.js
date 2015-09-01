@@ -11,10 +11,10 @@ var buffer = require('vinyl-buffer');
 var del = require('del');
 var watch = require('gulp-watch');
 
-function compile(watch) {
+function compile(debug, callback) {
 
   var bundler = browserify({
-    debug: true,
+    debug: debug,
     extensions: ['.js'],
     entries: ['src/client/app.js'],
     cache: {},
@@ -24,10 +24,16 @@ function compile(watch) {
 
   bundler.add(require.resolve("babel/polyfill"));
   bundler.transform(babelify);
-  bundler = watchify(bundler);
-  bundler.on('log', gutil.log);
 
-  if(watch) {
+  if (!debug) {
+    bundler.transform({
+      global: true,
+    }, 'uglifyify');
+  }
+
+  if (debug) {
+    bundler = watchify(bundler);
+    bundler.on('log', gutil.log);
     bundler.on('update', bundle);
   }
 
@@ -40,29 +46,41 @@ function compile(watch) {
       })
       .pipe(source('bundle.js'))
       .pipe(buffer())
-      .pipe(gulp.dest('build/static/js'));
+      .pipe(gulp.dest('build/static/js'))
+      .on('end', callback);
   }
 
   return bundle();
+}
+
+function build (debug, done) {
+  var htmlGlobs = ['src/**.html'];
+  var staticGlobs = ['src/static/**'];
+  var html = gulp.src(htmlGlobs);
+  var static = gulp.src(staticGlobs)
+
+  if(debug) {
+    html = html.pipe(watch(htmlGlobs));
+    static = static.pipe(watch(staticGlobs));
+  }
+
+  html.pipe(gulp.dest('build'))
+  static.pipe(gulp.dest('build/static'));
+  compile(debug, done);
 }
 
 gulp.task('clean', function(done) {
   del(['build/**'], done);
 });
 
-gulp.task('build', ['clean'], function() {
-  var htmlGlobs = ['src/**.html'];
-  var staticGlobs = ['src/static/**'];
-
-  gulp.src(htmlGlobs)
-    .pipe(watch(htmlGlobs).on('change', function(path) { gutil.log(path + ' has changed')}))
-    .pipe(gulp.dest('build'))
-
-  gulp.src(staticGlobs)
-    .pipe(watch(staticGlobs))
-    .pipe(gulp.dest('build/static'));
-
-  compile(true);
+gulp.task('build:development', ['clean'], function(done) {
+  var debug = true;
+  build(debug, done);
 });
 
-gulp.task('default', ['clean', 'build']);
+gulp.task('build:production', ['clean'], function(done) {
+  var debug = false;
+  build(debug, done);
+});
+
+gulp.task('default', ['clean', 'build:development']);
