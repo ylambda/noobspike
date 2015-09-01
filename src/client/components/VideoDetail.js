@@ -12,6 +12,8 @@ class VideoDetail extends React.Component {
       if (!this.props.video)
           return (<div>Loading</div>);
 
+      let safeTitle = {__html: this.props.video.title };
+
       return (
         <div id="video-detail-view">
           <div className="row">
@@ -29,9 +31,7 @@ class VideoDetail extends React.Component {
                   </div>
                 </div>
                 <div className="description">
-                  <div className="video-title">
-                    { this.props.video.title }
-                  </div>
+                  <div className="video-title" dangerouslySetInnerHTML={safeTitle}></div>
                   <Link to="user-video-list" params={{username: this.props.video.author}}>
                    <span className={"flair flair-"+this.props.video.authorFlair}></span>
                    { this.props.video.author }

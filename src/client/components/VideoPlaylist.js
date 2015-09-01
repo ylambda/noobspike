@@ -5,6 +5,9 @@ class VideoPlaylist extends React.Component {
 
   render () {
         let items = this.props.items.map( (video, key) => {
+
+          let safeTitle = {__html: video.title };
+
           return (
             <li className="playlist-item" key={video.id}>
               <div className="thumbnail-container">
@@ -14,7 +17,7 @@ class VideoPlaylist extends React.Component {
               </div>
               <div className="detail">
                 <Link to="video-detail" params={{id: video.id}}>
-                  <div className="title" dangerouslySetInnerHTML={{__html:video.title}} ></div>
+                  <div className="title" dangerouslySetInnerHTML={safeTitle} ></div>
                   <div className="username">
                     by { video.author }
                   </div>

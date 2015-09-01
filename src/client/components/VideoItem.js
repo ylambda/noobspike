@@ -6,6 +6,8 @@ class VideoItem extends React.Component {
 
   render () {
 
+      let safeTitle = {__html: this.props.video.title };
+
       return (
           <div className="col-md-4 col-sm-6 col-xs-12">
             <div className="video-item">
@@ -13,7 +15,7 @@ class VideoItem extends React.Component {
                 <Link to="video-detail" params={{id: this.props.video.id}}>
                   <img src={ this.props.video.thumbnail} />
                     <div className="overlay" >
-                      <div className="overlay-fg">{this.props.video.title}</div>
+                      <div className="overlay-fg" dangerouslySetInnerHTML={safeTitle}></div>
                       <div className="overlay-bg"></div>
                     </div>
                 </Link>
