@@ -95,7 +95,9 @@ AppDispatcher.register((action) => {
         case AppConstants.VIDEO_LIST_CHANGE:
             let listing = action.data;
             videoList = listing.items;
-            videoListPagination = {before: listing.before, after: listing.after};
+            videoListPagination = {
+              before: listing.before,
+              after: listing.after};
             video_store.emit(AppConstants.VIDEO_LIST_CHANGE);
             break;
 
