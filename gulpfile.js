@@ -78,7 +78,7 @@ gulp.task('build:development', ['clean'], function(done) {
   build(debug, done);
 });
 
-gulp.task('build:production', ['clean'], function(done) {
+gulp.task('build:production', function(done) {
   var debug = false;
   build(debug, done);
 });
