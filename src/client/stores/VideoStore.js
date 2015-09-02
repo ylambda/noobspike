@@ -102,14 +102,14 @@ AppDispatcher.register((action) => {
             break;
 
         case AppConstants.FILTER_CHANGE:
-            if(action.item.type === 't') {
-              timeFilter = action.item.value;
+            if(action.data.type === 't') {
+              timeFilter = action.data.value;
               video_store.emit(AppConstants.VIDEO_LIST_CHANGE);
             }
             break;
 
         case AppConstants.VIDEO_DETAIL_UPDATE:
-            video_store.emit(AppConstants.VIDEO_DETAIL_UPDATE, action.item);
+            video_store.emit(AppConstants.VIDEO_DETAIL_UPDATE, action.data);
             break;
     }
 
